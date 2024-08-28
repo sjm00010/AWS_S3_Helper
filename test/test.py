@@ -13,54 +13,55 @@ class TestS3Operations(unittest.TestCase):
             aws_secret_access_key=env["AWS_SECRET_ACCESS_KEY"],
             aws_region=env["AWS_REGION"],
         )
-        cls.bucket_name = "pruebas-files-novo"  # Reemplaza con el nombre de tu bucket
+        cls.bucket_name = "pruebas-files-novo"
         cls.local_folder = "test_folder"
-        cls.local_file = os.path.join(cls.local_folder, "test_file.txt")
+        cls.file_name = "test_file.txt"
         cls.s3_path = "test_folder/"
+        cls.text_file = "Hello, this is a test"
 
-        # Crea la carpeta local y el archivo de prueba
+        # Create local folder and test file
         os.makedirs(cls.local_folder, exist_ok=True)
-        with open(cls.local_file, "w") as f:
-            f.write("Hola, esto es una prueba")
+        with open(os.path.join(cls.local_folder, cls.file_name), "w") as f:
+            f.write(cls.text_file)
 
     def test_1_upload_folder(self):
-        # Sube la carpeta al S3
+        # Upload the folder to S3
         self.s3.upload_folder(self.bucket_name, self.local_folder, self.s3_path)
 
-        # Verifica que el archivo subido existe en S3
+        # Check that the uploaded file exists in S3
         self.assertTrue(
-            self.s3.list(self.bucket_name, self.s3_path)["files"] == ["test_file.txt"]
+            self.s3.list(self.bucket_name, self.s3_path)["files"] == [self.file_name]
         )
 
     def test_2_read_file(self):
-        # Lee el archivo directamente desde S3
-        content = self.s3.read_file(self.bucket_name, self.s3_path + "test_file.txt")
-        self.assertEqual(content, "Hola, esto es una prueba")
+        # Read the file directly from S3
+        content = self.s3.read_file(self.bucket_name, self.s3_path + self.file_name)
+        self.assertEqual(content, self.text_file)
 
     def test_3_download_folder(self):
-        # Elimina la carpeta local antes de descargar
+        # Remove the local folder before downloading
         if os.path.exists(self.local_folder):
             os.system(f"rm -rf {self.local_folder}")
 
-        # Descarga la carpeta desde S3
+        # Download the folder from S3
         self.s3.download_folder(self.bucket_name, self.s3_path, self.local_folder)
 
-        # Verifica que la carpeta se haya descargado y el contenido sea correcto
+        # Check that the folder has been downloaded and the contents are correct
         self.assertTrue(os.path.exists(self.local_file))
         with open(self.local_file, "r") as f:
             content = f.read()
         self.assertEqual(content, "Hola, esto es una prueba")
 
     def test_4_delete_folder(self):
-        # Elimina la carpeta en S3
+        # Remove the folder in S3
         self.s3.delete_folder(self.bucket_name, self.s3_path)
 
-        # Verifica que la carpeta haya sido eliminada en S3
+        # Check that the folder has been deleted in S3
         self.assertTrue(self.s3_path not in self.s3.list(self.bucket_name)["folders"])
 
     @classmethod
     def tearDownClass(cls):
-        # Limpia los archivos locales creados
+        # Cleans up the local files created
         if os.path.exists(cls.local_folder):
             os.system(f"rm -rf {cls.local_folder}")
 

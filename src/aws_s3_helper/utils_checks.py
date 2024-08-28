@@ -3,16 +3,16 @@ from botocore.exceptions import ClientError
 
 def bucket_exists(client, bucket_name: str) -> bool:
     """
-    Verifica si un bucket de S3 existe.
+    Checks if an S3 bucket exists.
 
     Args:
-        bucket_name (str): El nombre del bucket de S3.
+        bucket_name (str): The name of the S3 bucket.
 
     Returns:
-        bool: True si el bucket existe, False si no existe.
+        bool: True if the bucket exists, False if it does not.
 
     Raises:
-        Exception: Si ocurre un error al intentar verificar la existencia del bucket.
+        Exception: If an error occurs when trying to verify the existence of the bucket.
     """
     try:
         client.head_bucket(Bucket=bucket_name)
@@ -22,29 +22,29 @@ def bucket_exists(client, bucket_name: str) -> bool:
         if error_code == 404:
             return False
         else:
-            raise Exception(f"Error al verificar la existencia del bucket: {e}")
+            raise Exception(f"Error verifying the existence of the bucket: {e}")
 
 
 def s3_path_exists(client, bucket_name: str, s3_path: str) -> bool:
     """
-    Verifica si un archivo o carpeta existe en el bucket de S3 bajo la ruta especificada.
+    Checks if a file or folder exists in the S3 bucket under the specified path.
 
     Args:
-        bucket_name (str): El nombre del bucket de S3.
-        s3_path (str): La ruta del archivo o carpeta en el bucket.
+        bucket_name (str): The name of the S3 bucket.
+        s3_path (str): The path to the file or folder in the bucket.
 
     Returns:
-        bool: True si el archivo o carpeta existe, False si no existe.
+        bool: True if the file or folder exists, False if it does not exist.
 
     Raises:
-        Exception: Si ocurre un error al intentar verificar la existencia del archivo o carpeta.
+        Exception: If an error occurs when trying to verify the existence of the file or folder.
     """
-    if  s3_path.endswith("/"):  # Es un directorio
+    if  s3_path.endswith("/"):  # Folder
         result = client.list_objects_v2(
             Bucket=bucket_name, Prefix=s3_path, Delimiter="/"
         )
         return "CommonPrefixes" in result or "Contents" in result
-    else:  # Es un archivo
+    else:  # File
         try:
             client.head_object(Bucket=bucket_name, Key=s3_path)
             return True
@@ -54,5 +54,5 @@ def s3_path_exists(client, bucket_name: str, s3_path: str) -> bool:
                 return False
             else:
                 raise Exception(
-                    f"Error al verificar la existencia del archivo o carpeta: {e}"
+                    f"Error verifying the existence of the file or folder: {e}"
                 )
