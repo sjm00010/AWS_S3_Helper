@@ -3,11 +3,7 @@ import os
 import boto3
 from tqdm import tqdm
 
-if __name__ == "__main__":
-    from .utils_checks import bucket_exists, s3_path_exists
-else:
-    from utils_checks import bucket_exists, s3_path_exists
-
+from .utils_checks import bucket_exists, s3_path_exists
 
 class S3:
     def __init__(

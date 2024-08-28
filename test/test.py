@@ -2,7 +2,7 @@ import os
 import unittest
 from dotenv import dotenv_values
 
-from src.aws_s3_helper.s3 import S3
+from aws_s3_helper.s3 import S3
 
 class TestS3Operations(unittest.TestCase):
     @classmethod
@@ -47,10 +47,10 @@ class TestS3Operations(unittest.TestCase):
         self.s3.download_folder(self.bucket_name, self.s3_path, self.local_folder)
 
         # Check that the folder has been downloaded and the contents are correct
-        self.assertTrue(os.path.exists(self.local_file))
-        with open(self.local_file, "r") as f:
+        self.assertTrue(os.path.exists(os.path.join(self.local_folder, self.file_name)))
+        with open(os.path.join(self.local_folder, self.file_name), "r") as f:
             content = f.read()
-        self.assertEqual(content, "Hola, esto es una prueba")
+        self.assertEqual(content, self.text_file)
 
     def test_4_delete_folder(self):
         # Remove the folder in S3
@@ -62,7 +62,7 @@ class TestS3Operations(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Cleans up the local files created
-        if os.path.exists(cls.local_folder):
+        if os.path.exists(os.path.join(cls.local_folder, cls.file_name)):
             os.system(f"rm -rf {cls.local_folder}")
 
 
