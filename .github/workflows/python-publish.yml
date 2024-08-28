@@ -24,7 +24,7 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        python3 tests/tests.py
+        python3 ../tests/tests.py
     - name: Build package
       run: python -m build
     - name: Publish package
