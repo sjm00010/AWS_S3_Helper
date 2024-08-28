@@ -10,14 +10,17 @@ if os.path.isfile(REQUIREMENTS_FILE):
     with open(REQUIREMENTS_FILE, encoding="utf8") as f:
         required.extend(f.read().splitlines())
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description: str = fh.read()
+
 setup(
     name="aws-s3-helper",
     version="1.0.0",
     author="Sergio Jimenez Moreno",
     author_email="sergio.jimenez@xauencybersecurity.com",
     description="Abstraction for easy access to AWS S3.",
-    # long_description=open("README.md").read(),
-    # long_description_content_type="text/markdown",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/sjm00010/AWS_S3_Helper",
     classifiers=[
         "Programming Language :: Python :: 3",
