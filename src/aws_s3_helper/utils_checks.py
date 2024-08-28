@@ -39,7 +39,7 @@ def s3_path_exists(client, bucket_name: str, s3_path: str) -> bool:
     Raises:
         Exception: Si ocurre un error al intentar verificar la existencia del archivo o carpeta.
     """
-    if s3_path.endswith("/"):  # Es un directorio
+    if  s3_path.endswith("/"):  # Es un directorio
         result = client.list_objects_v2(
             Bucket=bucket_name, Prefix=s3_path, Delimiter="/"
         )

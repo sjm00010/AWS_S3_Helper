@@ -2,7 +2,7 @@ import os
 
 import boto3
 from tqdm import tqdm
-from utils_checks import bucket_exists, s3_path_exists
+from .utils_checks import bucket_exists, s3_path_exists
 
 
 class S3:
@@ -47,7 +47,7 @@ class S3:
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"El bucket '{bucket_name}' no existe.")
 
-        if not s3_path_exists(self.__client, bucket_name, prefix):
+        if len(prefix) > 0 and not s3_path_exists(self.__client, bucket_name, prefix):
             raise Exception(
                 f"La ruta '{prefix}' no existe en el bucket '{bucket_name}'."
             )
@@ -338,8 +338,19 @@ class S3:
                 self.delete_folder(bucket_name, os.path.join(s3_path, folder) + "/")
                 overall_progress_bar.update(1)
 
-        # Finalmente, elimina la carpeta principal
-        self.__client.delete_object(Bucket=bucket_name, Key=s3_path.rstrip("/") + "/")
         print(
             f"Carpeta '{s3_path}' y su contenido eliminados del bucket '{bucket_name}'."
         )
+
+# from dotenv import dotenv_values
+
+# # Crea una instancia de la clase S3
+# env = dotenv_values()
+# s3 = S3(
+#     aws_access_key_id=env["AWS_ACCESS_KEY_ID"],
+#     aws_secret_access_key=env["AWS_SECRET_ACCESS_KEY"],
+#     aws_region=env["AWS_REGION"],
+# )
+
+# print(s3.list("pruebas-files-novo"))
+# s3.delete_folder("pruebas-files-novo", "test_folder123123/")
