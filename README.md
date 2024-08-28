@@ -8,11 +8,11 @@
 
 ## Features
 
-- File and Folder Upload:** Upload individual files or entire folders to an S3 bucket with a progress bar.
-- File and Folder Download:** Download individual files or folders from an S3 bucket with progress bar support.
-- Reading Files in S3:** Reads the contents of a file in S3 without the need to download the file.
-- File and Folder Deletion:** Deletes files or folders from an S3 bucket.
-- Existence Check:** Checks the existence of buckets and objects in S3.
+- **File and Folder Upload:** Upload individual files or entire folders to an S3 bucket with a progress bar.
+- **File and Folder Download:** Download individual files or folders from an S3 bucket with progress bar support.
+- **Reading Files in S3:** Reads the contents of a file in S3 without the need to download the file.
+- **File and Folder Deletion:** Deletes files or folders from an S3 bucket.
+- **Existence Check:** Checks the existence of buckets and objects in S3.
 
 ## Installation
 
