@@ -16,6 +16,8 @@ setup(
     author="Sergio Jiménez Moreno",
     author_email="sergio.jimenez@xauencybersecurity.com",
     description="Abstracción para acceder a S3 de AWS fácilmente.",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
     url="https://github.com/sjm00010/AWS_S3_Helper",
     classifiers=[
         "Programming Language :: Python :: 3",
