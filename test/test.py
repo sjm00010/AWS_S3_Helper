@@ -2,7 +2,7 @@ import os
 import unittest
 from dotenv import dotenv_values
 
-from aws_s3_helper.s3 import S3
+from src.aws_s3_helper.s3 import S3
 
 class TestS3Operations(unittest.TestCase):
     @classmethod
@@ -51,15 +51,12 @@ class TestS3Operations(unittest.TestCase):
             content = f.read()
         self.assertEqual(content, "Hola, esto es una prueba")
 
-        # Vuelve a eliminar la carpeta local
-        os.system(f"rm -rf {self.local_folder}")
-
     def test_4_delete_folder(self):
         # Elimina la carpeta en S3
         self.s3.delete_folder(self.bucket_name, self.s3_path)
 
         # Verifica que la carpeta haya sido eliminada en S3
-        self.assertFalse(self.s3.list(self.bucket_name, self.s3_path)["files"] == ["test_file.txt"])
+        self.assertTrue(self.s3_path not in self.s3.list(self.bucket_name)["folders"])
 
     @classmethod
     def tearDownClass(cls):
