@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
 
     needs:
-      - build
+      - test-package
 
     permissions:
       id-token: write
