@@ -1,25 +1,27 @@
 # AWS S3 Helper Package 🇬🇧
 ![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-GPLv3-green)
 
 ## Description
 
-`aws-s3-helper` is a Python utility that provides a simplified interface for interacting with AWS S3. It provides functions for uploading, downloading, reading, and deleting files and folders.
+`aws-s3-helper` is a Python utility that provides a simplified interface for interacting with AWS S3. It provides functions for uploading, downloading, reading, deleting, and renaming files and folders, as well as managing buckets.
 
 ## Features
 
+-  **Listing Buckets, Folders, and Files:** List all the buckets in your S3 account, or list the contents of a specific folder in an S3 bucket.
 - **File and Folder Upload:** Upload individual files or entire folders to an S3 bucket with a progress bar.
 - **File and Folder Download:** Download individual files or folders from an S3 bucket with progress bar support.
 - **Reading Files in S3:** Reads the contents of a file in S3 without the need to download the file.
 - **File and Folder Deletion:** Deletes files or folders from an S3 bucket.
-- **Existence Check:** Checks the existence of buckets and objects in S3.
+- **File and Folder Renaming:** Rename files or folders in an S3 bucket.
+- **Bucket Management:** Create, delete, and rename S3 buckets.
 
 ## Installation
 
 You can install the package directly from PyPi using pip:
 
 ```bash
-pip3 install aws-s3-utilities
+pip3 install aws-s3-helper
 ```
 
 ## Usage
@@ -38,44 +40,71 @@ AWS_REGION=your_region
 from dotenv import dotenv_values
 from aws_s3_helper.s3 import S3
 
-### Create an instance of the S3 class
+# Create an instance of the S3 class
 env = dotenv_values()
 s3 = S3(
-    aws_access_key_id=env[“AWS_ACCESS_KEY_ID”],
-    aws_secret_access_key=env[“AWS_SECRET_ACCESS_KEY”],
-    aws_region=env[“AWS_REGION”],
+    aws_access_key_id=env["AWS_ACCESS_KEY_ID"],
+    aws_secret_access_key=env["AWS_SECRET_ACCESS_KEY"],
+    aws_region=env["AWS_REGION"],
 )
 
-# bucket name
-bucket_name = “tu-bucket”
+# Bucket name
+bucket_name = "your-bucket"
+
+# List all buckets in your S3 account
+buckets = s3.list_buckets()
+print("Buckets:", buckets)
 
 # List the contents of a folder in S3
-listing = s3.list(bucket_name, “path_in_s3”)
-print(“Folders:”, list[“folders”])
-print(“Files:”, list[“files”])
+listing = s3.list(bucket_name, "path_in_s3")
+print("Folders:", listing["folders"])
+print("Files:", listing["files"])
 
 # Upload a folder to S3
-s3.upload_folder(bucket_name, “local_folder”, “path_to_s3/”)
+s3.upload_folder(bucket_name, "local_folder", "path_to_s3/")
 
 # Read a file in S3 without downloading it
-content = s3.read_file(bucket_name, “path_in_s3/file.txt”)
+content = s3.read_file(bucket_name, "path_in_s3/file.txt")
 print(content)
 
 # Download a folder from S3
-s3.download_folder(bucket_name, “path_in_s3/”, “local_folder/”)
+s3.download_folder(bucket_name, "path_in_s3/", "local_folder/")
+
+# Rename a file in S3
+s3.rename_file(bucket_name, "path_in_s3/old_name.txt", "path_in_s3/new_name.txt")
+
+# Rename a folder in S3
+s3.rename_folder(bucket_name, "path_in_s3/old_folder/", "path_in_s3/new_folder/")
+
+# Create a new bucket
+s3.create_bucket("new-bucket")
+
+# Rename a bucket
+s3.rename_bucket("old-bucket-name", "new-bucket-name")
 
 # Delete a folder in S3
-s3.delete_folder(bucket_name, “path_in_s3/”)
+s3.delete_folder(bucket_name, "path_in_s3/")
+
+# Delete a bucket
+s3.delete_bucket("bucket-to-delete")
 ```
 
 ### Running tests
-To run the tests, first make sure you have a valid AWS configuration (the tests use an environment variables file as discussed above). You can launch the tests using the VS Code utility or by running the following command:
+To run the tests, follow these steps:
 
-```bash
-python3 -m unittest discover -s test
-```
+1.	Ensure you have a valid AWS configuration by setting up an .env file as described above.
+2.	Install the necessary dependencies, which include unittest, boto3, and python-dotenv if they are not already installed:
 
-This will run the tests that check the upload, download, read and delete operations on S3.
+    ```bash
+    pip3 install boto3 python-dotenv
+    ```
+3.	Run the tests using the following command:
+
+    ```bash
+    python3 -m unittest discover -s test
+    ```
+
+This command will automatically discover and run all test cases in the test directory, checking the upload, download, read, delete, rename, and listing operations on S3, as well as bucket management functions.
 
 ## License
 This project is licensed under the GNU GPLv3 license. See the LICENSE file for more details.
@@ -86,7 +115,7 @@ For any question or suggestion, feel free to open an issue in the repository or 
 # Paquete AWS S3 Helper 🇪🇸
 
 ![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-GPLv3-green)
 
 ## Descripción
 
@@ -98,14 +127,15 @@ For any question or suggestion, feel free to open an issue in the repository or 
 - **Descarga de Archivos y Carpetas:** Descarga archivos individuales o carpetas desde un bucket de S3 con soporte de barra de progreso.
 - **Lectura de Archivos en S3:** Lee el contenido de un archivo en S3 sin necesidad de descargarlo.
 - **Eliminación de Archivos y Carpetas:** Elimina archivos o carpetas de un bucket de S3.
-- **Verificación de Existencia:** Comprueba la existencia de buckets y objetos en S3.
+- **Gestión de Buckets:** Crea, elimina, renombra y lista buckets de S3.
+- **Listar Buckets, Carpetas y Archivos:** Lista todos los buckets en tu cuenta de S3, o lista el contenido de una carpeta específica en un bucket de S3.
 
 ## Instalación
 
 Puedes instalar el paquete directamente desde PyPi usando pip:
 
 ```bash
-pip3 install aws-s3-utilities
+pip3 install aws-s3-helper
 ```
 
 ## Uso
@@ -135,6 +165,10 @@ s3 = S3(
 # Nombre del bucket
 bucket_name = "tu-bucket"
 
+# Listar todos los buckets en tu cuenta de S3
+buckets = s3.list_buckets()
+print("Buckets:", buckets)
+
 # Listar el contenido de una carpeta en S3
 listado = s3.list(bucket_name, "ruta_en_s3")
 print("Carpetas:", listado["folders"])
@@ -150,18 +184,42 @@ print(contenido)
 # Descargar una carpeta desde S3
 s3.download_folder(bucket_name, "ruta_en_s3/", "carpeta_local/")
 
+# Renombrar un archivo en S3
+s3.rename_file(bucket_name, "ruta_en_s3/viejo_nombre.txt", "ruta_en_s3/nuevo_nombre.txt")
+
+# Renombrar una carpeta en S3
+s3.rename_folder(bucket_name, "ruta_en_s3/carpeta_vieja/", "ruta_en_s3/carpeta_nueva/")
+
+# Crear un nuevo bucket
+s3.create_bucket("nuevo-bucket")
+
+# Renombrar un bucket
+s3.rename_bucket("bucket-viejo-nombre", "bucket-nuevo-nombre")
+
 # Eliminar una carpeta en S3
 s3.delete_folder(bucket_name, "ruta_en_s3/")
+
+# Eliminar un bucket
+s3.delete_bucket("bucket-a-eliminar")
 ```
 
 ### Ejecución de test
-Para ejecutar los tests, primero asegúrate de que tienes una configuración de AWS válida (los test utilizan un archivo de variables de entorno como el comentado anteriormente). Puedes lanzar los test mediante la utilidad de VS Code o mediante la ejecución del siguiente comando:
+Para ejecutar los tests, sigue estos pasos:
 
-```bash
-python3 -m unittest discover -s test
-```
+1.	Asegúrate de que tienes una configuración de AWS válida mediante la creación de un archivo .env como se describe anteriormente.
 
-Esto ejecutará los tests que comprueban las operaciones de subida, descarga, lectura y eliminación en S3.
+2.	Instala las dependencias necesarias, que incluyen unittest, boto3, y python-dotenv si aún no están instaladas:
+
+    ```bash
+    pip3 install boto3 python-dotenv
+    ```
+3.	Ejecuta los tests con el siguiente comando:
+
+    ```bash
+    python3 -m unittest discover -s test
+    ```
+
+Este comando descubrirá y ejecutará automáticamente todos los casos de prueba en el directorio test, comprobando las operaciones de subida, descarga, lectura, eliminación, renombrado y listado en S3, así como las funciones de gestión de buckets.
 
 ## Licencia
 Este proyecto está licenciado bajo la licencia GNU GPLv3. Consulta el archivo LICENSE para más detalles.
