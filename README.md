@@ -1,6 +1,7 @@
 # AWS S3 Helper Package 🇬🇧
-![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
+![Python Version](https://img.shields.io/badge/python-3.8%2B-red)
 ![License](https://img.shields.io/badge/license-GPLv3-green)
+[![Downloads](https://static.pepy.tech/badge/aws_s3_helper)](https://pepy.tech/project/aws_s3_helper)
 
 ## Description
 
@@ -114,8 +115,9 @@ For any question or suggestion, feel free to open an issue in the repository or 
 
 # Paquete AWS S3 Helper 🇪🇸
 
-![Python Version](https://img.shields.io/badge/python-3.7%2B-blue)
+![Python Version](https://img.shields.io/badge/python-3.8%2B-red)
 ![License](https://img.shields.io/badge/license-GPLv3-green)
+[![Downloads](https://static.pepy.tech/badge/aws_s3_helper)](https://pepy.tech/project/aws_s3_helper)
 
 ## Descripción
 
