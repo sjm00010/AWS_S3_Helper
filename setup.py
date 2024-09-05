@@ -15,7 +15,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="aws-s3-helper",
-    version="1.2.0",
+    version="1.2.1",
     author="Sergio Jimenez Moreno",
     author_email="sergio.jimenez@xauencybersecurity.com",
     description="Abstraction for easy access to AWS S3.",
@@ -30,5 +30,5 @@ setup(
     package_dir={"": SRC_FOLDER},
     packages=find_packages(where=SRC_FOLDER),
     install_requires=required,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
 )
