@@ -112,7 +112,7 @@ class S3:
         Args:
             bucket_name (str): The name of the S3 bucket.
             prefix (str, optional): The prefix used to filter the objects in the bucket.
-                                    Default is an empty string.
+                                    Default is an empty string. Must be find with '/'
 
         returns:
             dict: A dictionary with two lists:
@@ -154,16 +154,17 @@ class S3:
 
     # ------------------------- File functions ---------------------------
 
-    def read_file(self, bucket_name: str, s3_path: str) -> str:
+    def read_file(self, bucket_name: str, s3_path: str, format: str | None = None) -> str:
         """
         Reads the contents of a file stored in an AWS S3 bucket without downloading it.
 
         Args:
             bucket_name (str): The name of the S3 bucket.
             s3_path (str): The path to the file in the bucket.
+            format (str, optional): The format of the file. Default is None.
 
         Returns:
-            str: The contents of the file as a string.
+            str: The contents of the file as a string without encoding or decoding if format is provided.
 
         Raises:
             Exception: If the bucket or file does not exist.
@@ -177,7 +178,11 @@ class S3:
             )
 
         response = self.__client.get_object(Bucket=bucket_name, Key=s3_path)
-        content = response["Body"].read().decode("utf-8")
+
+        if format is None:
+            content = response["Body"].read()
+        else:
+            content = response["Body"].read().decode(format)
         return content
 
     def rename_file(self, bucket_name: str, old_s3_path: str, new_s3_path: str) -> None:
@@ -314,7 +319,7 @@ class S3:
 
         Args:
             bucket_name (str): The name of the S3 bucket.
-            s3_path (str): The path to the folder in the bucket.
+            s3_path (str): The path to the folder in the bucket. Must be find with '/'
             local_path (str): The path where the downloaded folder will be saved.
         """
         if not bucket_exists(self.__client, bucket_name):
@@ -357,7 +362,7 @@ class S3:
         Args:
             bucket_name (str): The name of the S3 bucket.
             folder_path (str): The local path of the folder to upload.
-            s3_path (str): The path in the bucket where the folder will be saved.
+            s3_path (str): The path in the bucket where the folder will be saved. Must be find with '/'
 
         Raises:
             Exception: If the bucket or local folder is not found.
@@ -407,7 +412,7 @@ class S3:
 
         Args:
             bucket_name (str): The name of the S3 bucket.
-            s3_path (str): The path to the folder in the bucket.
+            s3_path (str): The path to the folder in the bucket. Must be find with '/'
 
         Raises:
             Exception: If the bucket or folder does not exist.
@@ -441,8 +446,8 @@ class S3:
 
         Args:
             bucket_name (str): The name of the S3 bucket.
-            old_s3_path (str): The current path of the folder in the bucket.
-            new_s3_path (str): The new path of the folder in the bucket.
+            old_s3_path (str): The current path of the folder in the bucket. Must be find with '/'
+            new_s3_path (str): The new path of the folder in the bucket. Must be find with '/'
 
         Raises:
             Exception: If the bucket or folder does not exist, or if the new path already exists.
