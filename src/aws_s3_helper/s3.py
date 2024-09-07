@@ -119,6 +119,14 @@ class S3:
                   - 'folders': Names of folders found under the prefix (without the prefix or trailing slash).
                   - 'files': Names of the files found under the prefix (without the prefix).
         """
+        # Removes the leading slash from the prefix if it exists
+        if prefix.startswith("/"):
+            prefix = prefix[1:]
+        
+        # Add a trailing slash to the prefix if it does not exist
+        if not prefix.endswith("/"):
+            prefix = prefix + "/"
+            
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -126,10 +134,6 @@ class S3:
             raise Exception(
                 f"The path '{prefix}' does not exist in the bucket '{bucket_name}'."
             )
-
-        # Removes the leading slash from the prefix if it exists
-        if prefix.startswith("/"):
-            prefix = prefix[1:]
 
         paginator = self.__client.get_paginator("list_objects_v2")
         operation_parameters: dict[str, str] = {
@@ -169,6 +173,10 @@ class S3:
         Raises:
             Exception: If the bucket or file does not exist.
         """
+                # Removes the leading slash from the s3_path if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+            
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -197,6 +205,12 @@ class S3:
         Raises:
             Exception: If the bucket or file does not exist, or if the new path already exists.
         """
+        # Removes the leading slash from the old_s3_path or new_s3_path if it exists
+        if old_s3_path.startswith("/"):
+            old_s3_path = old_s3_path[1:]
+        if new_s3_path.startswith("/"):
+            new_s3_path = new_s3_path[1:]
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -225,7 +239,10 @@ class S3:
             s3_path (str): The path to the file in the bucket.
             local_path (str): The path where the downloaded file will be saved.
         """
-
+        # Removes the leading slash from the s3_path if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -265,6 +282,10 @@ class S3:
         Raises:
             Exception: If the bucket does not exist or the local file is not found.
         """
+        # Removes the leading slash from the prefix if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+        
         if not os.path.isfile(file_path):
             raise FileNotFoundError(
                 f"The file '{file_path}' does not exist on the local file system."
@@ -301,6 +322,10 @@ class S3:
         Raises:
             Exception: If the bucket or file does not exist.
         """
+        # Removes the leading slash from the s3_path if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -322,6 +347,14 @@ class S3:
             s3_path (str): The path to the folder in the bucket. Must be find with '/'
             local_path (str): The path where the downloaded folder will be saved.
         """
+        # Removes the leading slash from the s3_path if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+        
+        # Add a trailing slash to the s3_path if it does not exist
+        if not s3_path.endswith("/"):
+            s3_path = s3_path + "/"
+            
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -367,6 +400,14 @@ class S3:
         Raises:
             Exception: If the bucket or local folder is not found.
         """
+        # Removes the leading slash from the s3_path if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+        
+        # Add a trailing slash to the s3_path if it does not exist
+        if not s3_path.endswith("/"):
+            s3_path = s3_path + "/"
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -417,6 +458,14 @@ class S3:
         Raises:
             Exception: If the bucket or folder does not exist.
         """
+        # Removes the leading slash from the s3_path if it exists
+        if s3_path.startswith("/"):
+            s3_path = s3_path[1:]
+        
+        # Add a trailing slash to the s3_path if it does not exist
+        if not s3_path.endswith("/"):
+            s3_path = s3_path + "/"
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -452,6 +501,12 @@ class S3:
         Raises:
             Exception: If the bucket or folder does not exist, or if the new path already exists.
         """
+        # Removes the leading slash from the old_s3_path or new_s3_path if it exists
+        if old_s3_path.startswith("/"):
+            old_s3_path = old_s3_path[1:]
+        if new_s3_path.startswith("/"):
+            new_s3_path = new_s3_path[1:]
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
 
@@ -492,6 +547,9 @@ class S3:
         Raises:
             Exception: If the bucket already exists or if there is an error during creation.
         """
+        # Remove the leading slash from the bucket_name if it exists
+        bucket_name.replace("/", "")
+        
         if bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' already exists.")
 
@@ -517,6 +575,9 @@ class S3:
         Raises:
             Exception: If the bucket does not exist or is not empty.
         """
+        # Remove the leading slash from the bucket_name if it exists
+        bucket_name.replace("/", "")
+        
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
         
@@ -538,6 +599,10 @@ class S3:
             Exception: If the old bucket does not exist, if the new bucket already exists,
                     or if there is an error during the process.
         """
+        # Remove the leading slash from the bucket_name if it exists
+        old_bucket_name.replace("/", "")
+        new_bucket_name.replace("/", "")
+        
         if not bucket_exists(self.__client, old_bucket_name):
             raise Exception(f"The bucket '{old_bucket_name}' does not exist.")
 
