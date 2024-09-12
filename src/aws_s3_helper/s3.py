@@ -119,13 +119,14 @@ class S3:
                   - 'folders': Names of folders found under the prefix (without the prefix or trailing slash).
                   - 'files': Names of the files found under the prefix (without the prefix).
         """
-        # Removes the leading slash from the prefix if it exists
-        if prefix.startswith("/"):
-            prefix = prefix[1:]
+        if prefix != "":
+            # Removes the leading slash from the prefix if it exists
+            if prefix.startswith("/"):
+                prefix = prefix[1:]
         
-        # Add a trailing slash to the prefix if it does not exist
-        if not prefix.endswith("/"):
-            prefix = prefix + "/"
+            # Add a trailing slash to the prefix if it does not exist
+            if not prefix.endswith("/"):
+                prefix = prefix + "/"
             
         if not bucket_exists(self.__client, bucket_name):
             raise Exception(f"The bucket '{bucket_name}' does not exist.")
