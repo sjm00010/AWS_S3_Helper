@@ -2,7 +2,7 @@ import os
 import unittest
 from dotenv import dotenv_values
 
-from aws_s3_helper.s3 import S3
+from aws_s3_helper import S3
 
 class TestS3Operations(unittest.TestCase):
     @classmethod

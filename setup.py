@@ -25,8 +25,7 @@ setup(
     package_dir={"": SRC_FOLDER},
     packages=find_packages(where=SRC_FOLDER),
     install_requires=[
-        "boto3",
-        "tqdm"
+        "boto3"
     ],
     python_requires=">=3.8",
 )

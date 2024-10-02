@@ -13,6 +13,7 @@
 - **File and Folder Upload:** Upload individual files or entire folders to an S3 bucket with a progress bar.
 - **File and Folder Download:** Download individual files or folders from an S3 bucket with progress bar support.
 - **Reading Files in S3:** Reads the contents of a file in S3 without the need to download the file.
+- **Get Presigned URL for a File:** Generate a presigned URL for a file in an S3 bucket. This URL can be used to download the file without authentication.
 - **File and Folder Deletion:** Deletes files or folders from an S3 bucket.
 - **File and Folder Renaming:** Rename files or folders in an S3 bucket.
 - **Bucket Management:** Create, delete, and rename S3 buckets.
@@ -23,6 +24,14 @@ You can install the package directly from PyPi using pip:
 
 ```bash
 pip3 install aws-s3-helper
+```
+
+### Dependencies
+- *boto3*: AWS SDK for Python
+- *tqdm*: Progress bar. OPTIONAL, only if you want to see logs.
+
+```bash
+pip3 install boto3 tqdm
 ```
 
 ## Usage
@@ -39,7 +48,7 @@ AWS_REGION=your_region
 
 ```Python
 from dotenv import dotenv_values
-from aws_s3_helper.s3 import S3
+from aws_s3_helper import S3
 
 # Create an instance of the S3 class
 env = dotenv_values()
@@ -47,6 +56,7 @@ s3 = S3(
     aws_access_key_id=env["AWS_ACCESS_KEY_ID"],
     aws_secret_access_key=env["AWS_SECRET_ACCESS_KEY"],
     aws_region=env["AWS_REGION"],
+    logging=True # Optional, set to True to enable logging. By default, it is set to False.
 )
 
 # Bucket name
@@ -67,6 +77,10 @@ s3.upload_folder(bucket_name, "local_folder", "path_to_s3/")
 # Read a file in S3 without downloading it
 content = s3.read_file(bucket_name, "path_in_s3/file.txt")
 print(content)
+
+# Generate a presigned URL for a file in S3
+presigned_url = s3.get_presigned_url_file(bucket_name, "path_in_s3/file.txt")
+print(presigned_url)
 
 # Download a folder from S3
 s3.download_folder(bucket_name, "path_in_s3/", "local_folder/")
@@ -128,6 +142,7 @@ For any question or suggestion, feel free to open an issue in the repository or 
 - **Subida de Archivos y Carpetas:** Sube archivos individuales o carpetas enteras a un bucket de S3 con una barra de progreso.
 - **Descarga de Archivos y Carpetas:** Descarga archivos individuales o carpetas desde un bucket de S3 con soporte de barra de progreso.
 - **Lectura de Archivos en S3:** Lee el contenido de un archivo en S3 sin necesidad de descargarlo.
+- **Generación de URL de Pre-Autorizada para un archivo:** Genera una URL de pre-autorizada para un archivo en un bucket de S3. Esta URL se puede utilizar para descargar el archivo sin autenticación.
 - **Eliminación de Archivos y Carpetas:** Elimina archivos o carpetas de un bucket de S3.
 - **Gestión de Buckets:** Crea, elimina, renombra y lista buckets de S3.
 - **Listar Buckets, Carpetas y Archivos:** Lista todos los buckets en tu cuenta de S3, o lista el contenido de una carpeta específica en un bucket de S3.
@@ -138,6 +153,14 @@ Puedes instalar el paquete directamente desde PyPi usando pip:
 
 ```bash
 pip3 install aws-s3-helper
+```
+
+### Dependencias
+- *boto3*: AWS SDK para Python
+- *tqdm*: Barra de progreso. OPCIONAL, solo si deseas ver los logs.
+
+```bash
+pip3 install boto3 tqdm
 ```
 
 ## Uso
@@ -154,7 +177,7 @@ AWS_REGION=tu_region
 
 ```Python
 from dotenv import dotenv_values
-from aws_s3_helper.s3 import S3
+from aws_s3_helper import S3
 
 # Crea una instancia de la clase S3
 env = dotenv_values()
@@ -162,6 +185,7 @@ s3 = S3(
     aws_access_key_id=env["AWS_ACCESS_KEY_ID"],
     aws_secret_access_key=env["AWS_SECRET_ACCESS_KEY"],
     aws_region=env["AWS_REGION"],
+    logging=True # Opcional, establece a True para habilitar el registro. Por defecto, se establece a False.
 )
 
 # Nombre del bucket
@@ -182,6 +206,10 @@ s3.upload_folder(bucket_name, "carpeta_local", "ruta_en_s3/")
 # Leer un archivo en S3 sin descargarlo
 contenido = s3.read_file(bucket_name, "ruta_en_s3/archivo.txt")
 print(contenido)
+
+# Generar una URL de pre-autorizada para un archivo en S3
+presigned_url = s3.get_presigned_url_file(bucket_name, "ruta_en_s3/archivo.txt")
+print(presigned_url)
 
 # Descargar una carpeta desde S3
 s3.download_folder(bucket_name, "ruta_en_s3/", "carpeta_local/")
