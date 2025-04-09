@@ -1,12 +1,8 @@
 from abc import ABC, abstractmethod
-from botocore.exceptions import ClientError
 
 class S3Interface(ABC):
     """
     Interface for the S3 class.
-
-    Args:
-        ABC (_type_): _description_
     """
 
     @abstractmethod
@@ -20,7 +16,7 @@ class S3Interface(ABC):
         Raises:
             Exception: If there is an error listing the buckets.
         """
-        pass
+        ...
 
     @abstractmethod
     def list(self, bucket_name: str, prefix: str = "") -> dict[str, list[str]]:
